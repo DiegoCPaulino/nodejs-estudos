@@ -5,6 +5,16 @@ const dataBasePath = new URL('db.json', import.meta.url)
 export class Database {
     #database = {}
 
+    constructor() {
+        fs.readFile(dataBasePath, 'utf8')
+            .then(data => {
+                this.#database = JSON.parse(data)
+            })
+            .catch(() => {
+                this.#persist()
+        })
+    }
+
     async #persist() {
     await fs.writeFile(
         dataBasePath,
